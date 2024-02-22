@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
@@ -24,6 +25,11 @@ Route::get('/', function () {
     ]
 );
 });
+
+Route::get('/register', [UserController::class, 'register'])->name('register');
+
+Route::get('/login', [UserController::class, 'login'])->name('login');
+
 
 // SINGLE LISTING
 Route::get('/listings/{id}', function($id){
