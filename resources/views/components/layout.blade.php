@@ -13,9 +13,8 @@
 </head>
 <body class="mb-48">
     @include('layouts.nav')
-    @include('layouts.hero')
     <main>
-        @yield('content')
+        {{$slot}}
     </main>
     @include('layouts.footer')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

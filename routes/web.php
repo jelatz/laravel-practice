@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Listing;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,24 +17,28 @@ use App\Models\Listing;
 |
 */
 
-Route::get('/', function () {
-    // return view('phpinfo');
-    return view('welcome',
-    [
-        'header' => 'Latest Listings',
-        'listings' => Listing::all()
-    ]
-);
-});
+/*ROUTE MODEL BINDING
+
+Common Resource Routes:
+index - Show all listings
+show - show single listings
+create - Show form to create new Listing
+store - store new Listing
+edit - show form to edit listing
+update - update listiing
+destroy - delete listing */
+
+Route::get('/', [ListingController::class, 'index'])->name('home');
 
 Route::get('/register', [UserController::class, 'register'])->name('register');
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
 
+//SHOW CREATE FORM
+Route::get('/listings/create', [ListingController::class, 'create'])->name('create-job');
+
+// STORE NEW LISTING
+Route::post('/listings', [ListingController::class, 'store'])->name('store-job');
 
 // SINGLE LISTING
-Route::get('/listings/{id}', function($id){
-    return view('listing',[
-        'listing' => Listing::find($id)
-    ]);
-});
+Route::get('/listings/{listing}', [ListingController::class, 'show']);
