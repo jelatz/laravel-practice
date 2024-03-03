@@ -10,40 +10,47 @@ class ListingController extends Controller
 {
     // SHOW ALL LISTINGS
     public function index()
-    {        
+    {
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag', 'search']))->get()
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(6)
         ]);
     }
     // SHOW SINGLE LISTING
-    public function show(Listing $listing){
-        return view('listings.show',[
+    public function show(Listing $listing)
+    {
+        return view('listings.show', [
             'listing' => $listing
         ]);
     }
 
     // SHOW CREATE FORM
-    public function create(){
+    public function create()
+    {
         return view('listings.create');
     }
 
     // STORE LISTING DATA
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $formFields = $request->validate([
             'title' => 'required',
-            'company' => ['required', Rule::unique('listings', 
-            'company')],
+            'company' => ['required', Rule::unique(
+                'listings',
+                'company'
+            )],
             'location' => 'required',
+            'website' => 'required',
             'email' => ['required', 'email'],
-            'tags' => 'required',  
-            'description' => 'required'            
+            'tags' => 'required',
+            'description' => 'required'
         ]);
+
+        if ($request->hasFile('logo')) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
 
         Listing::create($formFields);
 
-        return redirect('/');
+        return redirect('/')->with('message', 'Listing Created Successfully!');
     }
 }
-
-
-
