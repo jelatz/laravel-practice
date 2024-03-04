@@ -61,5 +61,8 @@ Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('u
 // DELETE LISTING
 Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('delete-job')->middleware('auth');
 
+// MANAGE LISTINGS
+Route::get('/listings/manage', [ListingController::class, 'manage'])->name('manage-listings')->middleware('auth');
+
 // SINGLE LISTING
 Route::get('/listings/{listing}', [ListingController::class, 'show']);
