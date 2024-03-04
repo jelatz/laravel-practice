@@ -30,15 +30,36 @@ destroy - delete listing */
 
 Route::get('/', [ListingController::class, 'index'])->name('home');
 
-Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::get('/register', [UserController::class, 'register'])->name('register')->middleware('guest');
 
-Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/users', [UserController::class, 'store'])->name('users')->middleware('guest');
+
+Route::get('manage-listings', [ListingController::class, 'manage'])->name('manage-listings')->middleware('auth');
+
+// USER LOGIN FORM
+Route::get('/login', [UserController::class, 'login'])->name('login')->middleware('guest');
+
+// LOGIN USER
+Route::post('/users/authenticate', [UserController::class, 'authenticate'])->name('users-authenticate');
+
+// USER LOGOUT
+Route::post('logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
 
 //SHOW CREATE FORM
-Route::get('/listings/create', [ListingController::class, 'create'])->name('create-job');
+Route::get('/listings/create', [ListingController::class, 'create'])->name('create-job')->middleware('auth');
 
 // STORE NEW LISTING
-Route::post('/listings', [ListingController::class, 'store'])->name('store-job');
+Route::post('/listings', [ListingController::class, 'store'])->name('store-job')->middleware('auth');
+
+
+// SHOW EDIT FORM
+Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('edit-job')->middleware('auth');
+
+// EDIT SUBMIT TO UPDATE
+Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('update-job')->middleware('auth');
+
+// DELETE LISTING
+Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('delete-job')->middleware('auth');
 
 // SINGLE LISTING
 Route::get('/listings/{listing}', [ListingController::class, 'show']);
