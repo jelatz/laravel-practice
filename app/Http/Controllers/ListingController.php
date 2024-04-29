@@ -97,7 +97,7 @@ class ListingController extends Controller
     // DELETE LISTING
     public function destroy(Listing $listing){
           // MAKE SURE LOGGED IN USER IS OWNER
-          if($listing->user_id != auth()->id()){
+        if($listing->user_id != auth()->id()){
             abort(403, 'Unauthorized Action');
         }
         $listing->delete();
